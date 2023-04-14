@@ -15,8 +15,6 @@ async function consoleBalances(addressess) {
   }
 }
 
-async function consoleInfo() {}
-
 async function main() {
   const [
     owner,
