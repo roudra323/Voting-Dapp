@@ -22,10 +22,6 @@ describe("Voting Contract", () => {
       candidate2,
     ] = await ethers.getSigners();
 
-    // console.log("owner", owner.address);
-    // console.log("canValidator", canValidator.address);
-    // console.log("voterValidator", voterValidator.address);
-
     const Voting = await ethers.getContractFactory("voting");
 
     hardhatVoting = await Voting.deploy(
@@ -48,7 +44,9 @@ describe("Voting Contract", () => {
         voterValidator.address
       );
     });
+  });
 
+  describe("Adding voters and candidates", async function () {
     it("should add voters", async function () {
       await hardhatVoting.addrVoter(voter1.address, "Voter 1", "12345");
       const struct = await hardhatVoting.voterInfo(voter1.address);
@@ -69,7 +67,9 @@ describe("Voting Contract", () => {
       expect(struct.canName).to.equal("Candidate 1");
       expect(struct.isVerifiedCan).to.equal(false);
     });
+  });
 
+  describe("Verify voters and candidates", async function () {
     it("Should verify voters", async function () {
       //adding voters
       await hardhatVoting.addrVoter(voter1.address, "Voter 1", "12345");
@@ -85,6 +85,9 @@ describe("Voting Contract", () => {
       const voter2Ins = await hardhatVoting.voterInfo(voter2.address);
       expect(voter1Ins.isVerifiedvoter).to.equal(true);
       expect(voter2Ins.isVerifiedvoter).to.equal(true);
+
+      expect(voter1Ins.hasVoted).to.equal(false);
+      expect(voter2Ins.hasVoted).to.equal(false);
     });
 
     it("Should verify candidates", async function () {
@@ -110,7 +113,9 @@ describe("Voting Contract", () => {
       expect(candidate1Ins.isVerifiedCan).to.equal(true);
       expect(candidate2Ins.isVerifiedCan).to.equal(true);
     });
+  });
 
+  describe("Voting tests", async function () {
     it("Should vote", async function () {
       //adding candidates
       await hardhatVoting.addrCandidate(candidate1.address, "Candidate 1");
@@ -146,6 +151,13 @@ describe("Voting Contract", () => {
 
       expect(candidate1Ins.totalVote).to.equal(1);
       expect(candidate2Ins.totalVote).to.equal(1);
+
+      //making instance for accessing the map
+      const voter1Ins = await hardhatVoting.voterInfo(voter1.address);
+      const voter2Ins = await hardhatVoting.voterInfo(voter2.address);
+      //accessing the map
+      expect(voter1Ins.hasVoted).to.equal(true);
+      expect(voter2Ins.hasVoted).to.equal(true);
     });
 
     it("Should not vote if not verified voters", async function () {
@@ -215,7 +227,9 @@ describe("Voting Contract", () => {
         hardhatVoting.connect(voter1).vote(candidate2.address)
       ).to.be.revertedWith("Voter already voted.");
     });
+  });
 
+  describe("Winner Selection", function () {
     it("Should select the winner", async function () {
       //adding candidates
       await hardhatVoting.addrCandidate(candidate1.address, "Candidate 1");
