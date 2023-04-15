@@ -2,7 +2,10 @@ import abi from "../../artifacts/contracts/voting.sol/voting.json";
 import { useState } from "react";
 import { ethers } from "ethers";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Owner from "./components/owner";
+import Validator from "./components/validator";
+import Voter from "./components/voter";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   const [state, setState] = useState({
@@ -69,6 +72,10 @@ function App() {
           Connect Wallet
         </button>
       )}
+
+      <Owner state={state} />
+      <Validator state={state} />
+      <Voter state={state} />
     </div>
   );
 }
