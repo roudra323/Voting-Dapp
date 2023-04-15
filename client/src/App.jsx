@@ -1,11 +1,13 @@
-import abi from "../../artifacts/contracts/voting.sol/voting.json";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ethers } from "ethers";
+import { Routes, Route } from "react-router-dom";
+import abi from "../../artifacts/contracts/voting.sol/voting.json";
 import "./App.css";
 import Owner from "./components/owner";
 import Validator from "./components/validator";
 import Voter from "./components/voter";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./components/home";
+import Candidate from "./components/candidate";
 
 function App() {
   const [state, setState] = useState({
@@ -17,7 +19,6 @@ function App() {
   const [account, setAccount] = useState("None");
   const [isConnected, setIsConnected] = useState(false);
   const [hovered, setHovered] = useState(false);
-  const [address, setAddress] = useState("");
 
   const connectWallet = async () => {
     const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
@@ -44,9 +45,9 @@ function App() {
           contractABI,
           signer
         );
+
         const accounts = await provider.listAccounts();
         setAccount(accounts[0]);
-        setAddress(accounts[0]);
         setState({ provider, signer, contract });
         setIsConnected(true);
       } else {
@@ -72,10 +73,16 @@ function App() {
           Connect Wallet
         </button>
       )}
-
-      <Owner state={state} />
-      <Validator state={state} />
-      <Voter state={state} />
+      <div>
+        <h1>Hi there this is test</h1>
+      </div>
+      <Routes>
+        <Route path="/owner" element={<Owner state={state} />} />
+        <Route path="/validator" element={<Validator state={state} />} />
+        <Route path="/voter" element={<Voter state={state} />} />
+        <Route path="/home" element={<Home state={state} />} />
+        <Route path="/candidate" element={<Candidate state={state} />} />
+      </Routes>
     </div>
   );
 }
