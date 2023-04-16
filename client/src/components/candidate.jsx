@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { ethers } from "ethers";
+import React from "react";
 
 const Candidate = () => {
-  return <div></div>;
+  return <div>candidate</div>;
 };
 
 export default Candidate;

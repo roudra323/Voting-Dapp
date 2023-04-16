@@ -73,14 +73,11 @@ function App() {
           Connect Wallet
         </button>
       )}
-      <div>
-        <h1>Hi there this is test</h1>
-      </div>
       <Routes>
         <Route path="/owner" element={<Owner state={state} />} />
         <Route path="/validator" element={<Validator state={state} />} />
         <Route path="/voter" element={<Voter state={state} />} />
-        <Route path="/home" element={<Home state={state} />} />
+        <Route path="/" element={<Home state={state} />} />
         <Route path="/candidate" element={<Candidate state={state} />} />
       </Routes>
     </div>
