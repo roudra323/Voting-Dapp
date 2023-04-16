@@ -3,12 +3,11 @@ import { ethers } from "ethers";
 import { Routes, Route } from "react-router-dom";
 import abi from "../../artifacts/contracts/voting.sol/voting.json";
 import "./App.css";
+import Home from "./components/home";
 import Owner from "./components/owner";
 import Validator from "./components/validator";
 import Voter from "./components/voter";
-import Home from "./components/home";
 import Candidate from "./components/candidate";
-
 function App() {
   const [state, setState] = useState({
     provider: null,
@@ -74,10 +73,10 @@ function App() {
         </button>
       )}
       <Routes>
+        <Route path="/" element={<Home state={state} account={account} />} />
         <Route path="/owner" element={<Owner state={state} />} />
         <Route path="/validator" element={<Validator state={state} />} />
         <Route path="/voter" element={<Voter state={state} />} />
-        <Route path="/" element={<Home state={state} />} />
         <Route path="/candidate" element={<Candidate state={state} />} />
       </Routes>
     </div>

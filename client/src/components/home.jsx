@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
+import { Routes, Route } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const Home = ({ state }) => {
+const Home = ({ state, account }) => {
+  const navigate = useNavigate();
   const { contract } = state;
 
   const [owner, setOwner] = useState("");
@@ -38,48 +41,23 @@ const Home = ({ state }) => {
     }
   }, [contract]);
 
-  return (
-    <div>
-      <h1>Hi there this is home</h1>
-      <p>owner : {owner}</p>
-      <div>
-        <p>validators :</p>
-        {validators.map((values, index) => {
-          return (
-            <div key={index}>
-              <p>{values}</p>
-            </div>
-          );
-        })}
-      </div>
-      <p>voters :</p>
-      {voters.map((values, index) => {
-        return (
-          <div key={index}>
-            <p>{values.voteraddress}</p>
-            <p>{values.voterName}</p>
-            <p>{values.NID}</p>
-            <p>{values.isVerifiedvoter.toString()}</p>
-            <p>{values.hasVoted.toString()}</p>
-            <hr />
-          </div>
-        );
-      })}
+  useEffect(() => {
+    if (account) {
+      navigate(
+        account === owner
+          ? "/owner"
+          : validators.includes(account)
+          ? "/validator"
+          : voters.includes(account)
+          ? "/voter"
+          : candidates.includes(account)
+          ? "/candidate"
+          : "/"
+      );
+    }
+  }, [account, navigate, owner, validators, voters, candidates]);
 
-      <p>candidates :</p>
-      {candidates.map((values, index) => {
-        return (
-          <div key={index}>
-            <p>{values.addr}</p>
-            <p>{values.canName}</p>
-            <p>{values.totalVote.toString()}</p>
-            <p>{values.isVerifiedCan.toString()}</p>
-            <hr />
-          </div>
-        );
-      })}
-    </div>
-  );
+  return <div></div>;
 };
 
 export default Home;
