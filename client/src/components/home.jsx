@@ -42,17 +42,23 @@ const Home = ({ state, account }) => {
   }, [contract]);
 
   useEffect(() => {
+    const allVoters = voters.flat();
+    const allCandidates = candidates.flat();
+    console.log(account);
+    console.log(validators);
+    console.log(candidates);
     if (account) {
       navigate(
         account === owner
           ? "/owner"
           : validators.includes(account)
           ? "/validator"
-          : voters.includes(account)
+          : allVoters.includes(account)
           ? "/voter"
-          : candidates.includes(account)
+          : allCandidates.includes(account)
           ? "/candidate"
-          : "/"
+          : "/",
+        { state: { isAccount: true } }
       );
     }
   }, [account, navigate, owner, validators, voters, candidates]);
