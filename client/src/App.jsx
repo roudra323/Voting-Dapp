@@ -8,7 +8,10 @@ import Owner from "./components/owner";
 import Validator from "./components/validator";
 import Voter from "./components/voter";
 import Candidate from "./components/candidate";
+import { useNavigate } from "react-router-dom";
+
 function App() {
+  const navigate = useNavigate();
   const [state, setState] = useState({
     provider: null,
     signer: null,
@@ -56,6 +59,63 @@ function App() {
       console.log(error);
     }
   };
+  const [allowedRoutes, setAllowedRoutes] = useState([
+    { path: "/", element: <Home state={state} account={account} /> },
+  ]);
+
+  useEffect(() => {
+    async function checkAllowedRoutes() {
+      if (account === "None") {
+        setAllowedRoutes([
+          { path: "/", element: <Home state={state} account={account} /> },
+        ]);
+        return;
+      }
+
+      const { contract } = state;
+      const canValidator = await contract.canValidator();
+      const voterValidator = await contract.voterValidator();
+      const allVoters = await contract.getAllVoterInfo();
+      const allCandidates = await contract.getAllCandidateInfo();
+
+      const allowedRoutes = [
+        { path: "/", element: <Home state={state} account={account} /> },
+      ];
+
+      if (account === (await contract.owner())) {
+        allowedRoutes.push({
+          path: "/owner",
+          element: <Owner state={state} />,
+        });
+      } else if (
+        canValidator.includes(account) ||
+        voterValidator.includes(account)
+      ) {
+        allowedRoutes.push({
+          path: "/validator",
+          element: <Validator state={state} />,
+        });
+      } else if (allVoters.flat().includes(account)) {
+        allowedRoutes.push({
+          path: "/voter",
+          element: <Voter state={state} />,
+        });
+      } else if (allCandidates.flat().includes(account)) {
+        allowedRoutes.push({
+          path: "/candidate",
+          element: <Candidate state={state} />,
+        });
+      }
+
+      setAllowedRoutes(allowedRoutes);
+    }
+
+    checkAllowedRoutes();
+  }, [account, state]);
+
+  const handleBackButton = () => {
+    navigate("/");
+  };
 
   return (
     <div className="container">
@@ -73,12 +133,21 @@ function App() {
         </button>
       )}
       <Routes>
-        <Route path="/" element={<Home state={state} account={account} />} />
-        <Route path="/owner" element={<Owner state={state} />} />
-        <Route path="/validator" element={<Validator state={state} />} />
-        <Route path="/voter" element={<Voter state={state} />} />
-        <Route path="/candidate" element={<Candidate state={state} />} />
+        {allowedRoutes.map((route) => (
+          <Route key={route.path} path={route.path} element={route.element} />
+        ))}
       </Routes>
+      {/* <button
+        type="button"
+        className="btn btn-primary"
+        onClick={
+          handleBackButton
+          // window.location.reload(true);
+          // navigate(-1);
+        }
+      >
+        Owner
+      </button> */}
     </div>
   );
 }
