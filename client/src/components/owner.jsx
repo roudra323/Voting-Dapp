@@ -9,6 +9,9 @@ const Owner = ({ state }) => {
   const [owner, setOwner] = useState("");
   const [candidateName, setCandidateName] = useState("");
   const [candidateAddress, setCandidateAddress] = useState("");
+  const [voterName, setVoterName] = useState("");
+  const [voterAddress, setVoterAddress] = useState("");
+  const [nid, setNid] = useState("");
   const location = useLocation();
 
   // get userId
@@ -31,10 +34,16 @@ const Owner = ({ state }) => {
     // add code to update candidate list or show success message
   };
 
+  const addVoter = async () => {
+    console.log("In the function" + voterName + " " + voterAddress + " " + nid);
+    await contract.addrVoter(voterAddress, voterName, nid);
+    console.log("Voter added");
+    // add code to update voter list or show success message
+  };
+
   return (
     <div>
-      {isAcc ? <h1>Owner: {owner}</h1> : <h1>Not Owner</h1>}
-      Add candidates
+      <h2>Add Candidates</h2>
       <form>
         <table className="table">
           <thead>
@@ -78,7 +87,59 @@ const Owner = ({ state }) => {
         </table>
       </form>
       <br />
-      Add Voters
+      <h2>Add Voters</h2>
+      <form>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th>Name</th>
+              <th>NID</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter voter address"
+                  value={voterAddress}
+                  onChange={(e) => setVoterAddress(e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter voter name"
+                  value={voterName}
+                  onChange={(e) => setVoterName(e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="form-control"
+                  placeholder="Enter NID number"
+                  value={nid}
+                  onChange={(e) => setNid(e.target.value)}
+                />
+              </td>
+              <td>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={addVoter}
+                >
+                  Add
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
     </div>
   );
 };

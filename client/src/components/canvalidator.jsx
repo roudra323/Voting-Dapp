@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 
-const Validator = ({ state }) => {
+const CanValidator = ({ state }) => {
   const { contract } = state;
   const [canValidator, setCanValidator] = useState("");
   const [voterValidator, setVoterValidator] = useState("");
@@ -10,8 +10,8 @@ const Validator = ({ state }) => {
     async function getValidators() {
       const canValidator = await contract.canValidator();
       const voterValidator = await contract.voterValidator();
-      setCanValidator(canValidator);
       setVoterValidator(voterValidator);
+      setCanValidator(canValidator);
     }
     if (contract) {
       getValidators();
@@ -20,10 +20,10 @@ const Validator = ({ state }) => {
 
   return (
     <div>
+      <h1>Voter validator : {voterValidator}</h1>
       <h1>Candidate validator : {canValidator}</h1>
-      <h1>Voter Validator : {voterValidator}</h1>
     </div>
   );
 };
 
-export default Validator;
+export default CanValidator;

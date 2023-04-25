@@ -5,7 +5,8 @@ import abi from "../../artifacts/contracts/voting.sol/voting.json";
 import "./App.css";
 import Home from "./components/home";
 import Owner from "./components/owner";
-import Validator from "./components/validator";
+import ValidatorCan from "./components/canvalidator";
+import ValidatorVoter from "./components/votervalidator";
 import Voter from "./components/voter";
 import Candidate from "./components/candidate";
 import { useNavigate } from "react-router-dom";
@@ -87,13 +88,15 @@ function App() {
           path: "/owner",
           element: <Owner state={state} />,
         });
-      } else if (
-        canValidator.includes(account) ||
-        voterValidator.includes(account)
-      ) {
+      } else if (canValidator === account) {
         allowedRoutes.push({
-          path: "/validator",
-          element: <Validator state={state} />,
+          path: "/CanValidator",
+          element: <ValidatorCan state={state} />,
+        });
+      } else if (voterValidator === account) {
+        allowedRoutes.push({
+          path: "/VoterValidator",
+          element: <ValidatorVoter state={state} />,
         });
       } else if (allVoters.flat().includes(account)) {
         allowedRoutes.push({
@@ -112,10 +115,6 @@ function App() {
 
     checkAllowedRoutes();
   }, [account, state]);
-
-  const handleBackButton = () => {
-    navigate("/");
-  };
 
   return (
     <div className="container">
@@ -137,17 +136,6 @@ function App() {
           <Route key={route.path} path={route.path} element={route.element} />
         ))}
       </Routes>
-      {/* <button
-        type="button"
-        className="btn btn-primary"
-        onClick={
-          handleBackButton
-          // window.location.reload(true);
-          // navigate(-1);
-        }
-      >
-        Owner
-      </button> */}
     </div>
   );
 }

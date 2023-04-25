@@ -8,7 +8,8 @@ const Home = ({ state, account }) => {
   const { contract } = state;
 
   const [owner, setOwner] = useState("");
-  const [validators, setValidators] = useState([]);
+  const [canValidators, setcanValidators] = useState("");
+  const [voterValidators, setvoterValidators] = useState("");
   const [voters, setVoters] = useState([]);
   const [candidates, setCandidates] = useState([]);
 
@@ -21,7 +22,8 @@ const Home = ({ state, account }) => {
     async function getValidators() {
       const canValidator = await contract.canValidator();
       const voterValidator = await contract.voterValidator();
-      setValidators([canValidator, voterValidator]);
+      setcanValidators(canValidator);
+      setvoterValidators(voterValidator);
     }
 
     async function getVoters() {
@@ -44,15 +46,14 @@ const Home = ({ state, account }) => {
   useEffect(() => {
     const allVoters = voters.flat();
     const allCandidates = candidates.flat();
-    console.log(account);
-    console.log(validators);
-    console.log(candidates);
     if (account) {
       navigate(
         account === owner
           ? "/owner"
-          : validators.includes(account)
-          ? "/validator"
+          : canValidators
+          ? "/CanValidator"
+          : voterValidators
+          ? "/VoterValidator"
           : allVoters.includes(account)
           ? "/voter"
           : allCandidates.includes(account)
@@ -61,7 +62,15 @@ const Home = ({ state, account }) => {
         { state: { isAccount: true } }
       );
     }
-  }, [account, navigate, owner, validators, voters, candidates]);
+  }, [
+    account,
+    navigate,
+    owner,
+    canValidators,
+    voterValidators,
+    voters,
+    candidates,
+  ]);
 
   return (
     <div className="container-fluid d-flex justify-content-center align-items-center py-5">
