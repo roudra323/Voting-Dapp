@@ -19,10 +19,12 @@ const Home = ({ state, account }) => {
       setOwner(ownerAddress);
     }
 
-    async function getValidators() {
+    async function getCanValidators() {
       const canValidator = await contract.canValidator();
-      const voterValidator = await contract.voterValidator();
       setcanValidators(canValidator);
+    }
+    async function getVoterValidators() {
+      const voterValidator = await contract.voterValidator();
       setvoterValidators(voterValidator);
     }
 
@@ -36,30 +38,59 @@ const Home = ({ state, account }) => {
     }
 
     if (contract) {
-      getOwner();
-      getValidators();
-      getVoters();
-      getCandidates();
+      Promise.all([
+        getOwner(),
+        getCanValidators(),
+        getVoterValidators(),
+        getVoters(),
+        getCandidates(),
+      ]);
+      ///Debugging
+      console.log(
+        // "In the promise\n",
+        // "Candidate validator" + canValidators + "\n",
+        // "Voter validator" + voterValidators.length + "\n",
+        // "Voter validator" + voterValidators + "\n",
+        account
+      );
     }
   }, [contract]);
 
   useEffect(() => {
     const allVoters = voters.flat();
     const allCandidates = candidates.flat();
+
+    ///Debugging
+    console.log(
+      "Before navigation\n",
+      "Candidate validator" + canValidators + "\n",
+      "Voter validator" + voterValidators.length + "\n",
+      "Voter validator" + voterValidators + "\n",
+      "account" + account
+    );
+
     if (account) {
       navigate(
         account === owner
           ? "/owner"
-          : canValidators
-          ? "/CanValidator"
-          : voterValidators
+          : account === voterValidators
           ? "/VoterValidator"
+          : account === canValidators
+          ? "/CanValidator"
           : allVoters.includes(account)
           ? "/voter"
           : allCandidates.includes(account)
           ? "/candidate"
           : "/",
         { state: { isAccount: true } }
+      );
+      ///Debugging
+      console.log(
+        "After navigation" + "\n",
+        "Candidate validator" + canValidators + "\n",
+        "Voter validator" + voterValidators.length + "\n",
+        "Voter validator" + voterValidators + "\n",
+        "account" + account
       );
     }
   }, [

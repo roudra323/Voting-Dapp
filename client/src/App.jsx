@@ -83,6 +83,27 @@ function App() {
         { path: "/", element: <Home state={state} account={account} /> },
       ];
 
+      ///Debugging
+      console.log(
+        "Before navigation (In app.jsx)\n",
+        "Candidate validator" + canValidator + "\n",
+        "Voter validator" + voterValidator.length + "\n",
+        "Voter validator" + voterValidator + "\n",
+        "account" + account + "\n",
+        "allowedRoutes" +
+          allowedRoutes.map((route) => {
+            console.log(route); // added console.log
+            return (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={route.element}
+              />
+            );
+          }) +
+          "\n"
+      );
+
       if (account === (await contract.owner())) {
         allowedRoutes.push({
           path: "/owner",
@@ -110,6 +131,26 @@ function App() {
         });
       }
 
+      ///Debugging
+      console.log(
+        "After navigation (In app.jsx)\n",
+        "Candidate validator" + canValidator + "\n",
+        "Voter validator" + voterValidator.length + "\n",
+        "Voter validator" + voterValidator + "\n",
+        "account" + account + "\n",
+        "allowedRoutes" +
+          allowedRoutes.map((route) => {
+            console.log(route); // added console.log
+            return (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={route.element}
+              />
+            );
+          }) +
+          "\n"
+      );
       setAllowedRoutes(allowedRoutes);
     }
 
