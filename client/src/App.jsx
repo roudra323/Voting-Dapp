@@ -100,7 +100,7 @@ function App() {
       } else if (allVoters.flat().includes(account)) {
         allowedRoutes.push({
           path: "/voter",
-          element: <Voter state={state} />,
+          element: <Voter state={state} account={account} />,
         });
       } else if (allCandidates.flat().includes(account)) {
         allowedRoutes.push({

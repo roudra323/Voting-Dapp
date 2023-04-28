@@ -63,8 +63,9 @@ contract voting {
         bool isVerifiedvoter;
         bool hasVoted;
     }
-
+    //array to store voter address
     address[] internal allvoterAddr;
+
     mapping(address => voteInfo) public voterInfo;
 
     function addrVoter(

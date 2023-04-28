@@ -8,13 +8,13 @@ const CanValidator = ({ state }) => {
   useEffect(() => {
     async function getCandidates() {
       const candidates = await contract.getAllCandidateInfo();
-      console.log(
-        "Inside function 'getCandidates()'(before) " + candidates + "\n"
-      );
+      // console.log(
+      //   "Inside function 'getCandidates()'(before) " + candidates + "\n"
+      // );
       setCandidates(candidates);
-      console.log(
-        "Inside function 'getCandidates()'(after) " + candidates + "\n"
-      );
+      // console.log(
+      //   "Inside function 'getCandidates()'(after) " + candidates + "\n"
+      // );
     }
 
     if (contract) {

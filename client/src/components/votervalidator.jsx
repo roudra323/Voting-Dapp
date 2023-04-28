@@ -8,9 +8,9 @@ const VoterValidator = ({ state }) => {
   useEffect(() => {
     async function getVoters() {
       const voters = await contract.getAllVoterInfo();
-      console.log("Inside function 'getVoters()'(before) " + voters + "\n");
+      // console.log("Inside function 'getVoters()'(before) " + voters + "\n");
       setVoters(voters);
-      console.log("Inside function 'getVoters()'(after) " + voters + "\n");
+      // console.log("Inside function 'getVoters()'(after) " + voters + "\n");
     }
 
     if (contract) {
