@@ -11,6 +11,27 @@
   color: #fff;
 } */
 
+#root {
+  background-image: url('./assets/bgImage.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+
+.winner-selection {
+  display: flex;
+  border-radius: 24px;
+  flex-direction: column;
+
+  margin: 12px;
+  padding: 12px 24px;
+  background-color: #2a6bda;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1rem;
+}
+
 .connect-wallet {
   float: right;
   margin: 12px;

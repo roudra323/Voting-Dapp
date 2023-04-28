@@ -90,11 +90,7 @@ const Home = ({ state, account }) => {
     candidates,
   ]);
 
-  return (
-    <div className="container-fluid d-flex justify-content-center align-items-center py-5">
-      <h1>This is the home page</h1>
-    </div>
-  );
+  return <div></div>;
 };
 
 export default Home;

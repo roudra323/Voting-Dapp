@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import Winner from "./winner";
+import "../App.css";
 
 const Owner = ({ state }) => {
   const navigate = useNavigate();
@@ -51,7 +52,10 @@ const Owner = ({ state }) => {
 
   return (
     <div>
-      <h2>Add Candidates</h2>
+      <button type="button" className="winner-selection pd-2" onClick={winner}>
+        Select Winner
+      </button>
+      <h2 className="pt-5">Add Candidates</h2>
       <form>
         <table className="table">
           <thead>
@@ -148,10 +152,6 @@ const Owner = ({ state }) => {
           </tbody>
         </table>
       </form>
-
-      <button type="button" className="btn btn-primary" onClick={winner}>
-        Winner
-      </button>
     </div>
   );
 };
