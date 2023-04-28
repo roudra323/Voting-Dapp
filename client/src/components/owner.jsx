@@ -12,10 +12,6 @@ const Owner = ({ state }) => {
   const [voterName, setVoterName] = useState("");
   const [voterAddress, setVoterAddress] = useState("");
   const [nid, setNid] = useState("");
-  const location = useLocation();
-
-  // get userId
-  const isAcc = location?.state?.isAccount ?? false;
 
   useEffect(() => {
     async function getOwner() {
@@ -31,6 +27,8 @@ const Owner = ({ state }) => {
     console.log("In the function" + candidateName + " " + candidateAddress);
     await contract.addrCandidate(candidateAddress, candidateName);
     console.log("Candidate added");
+    setCandidateName("");
+    setCandidateAddress("");
     // add code to update candidate list or show success message
   };
 
@@ -38,6 +36,9 @@ const Owner = ({ state }) => {
     console.log("In the function" + voterName + " " + voterAddress + " " + nid);
     await contract.addrVoter(voterAddress, voterName, nid);
     console.log("Voter added");
+    setVoterName("");
+    setVoterAddress("");
+    setNid("");
     // add code to update voter list or show success message
   };
 

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { ethers } from "ethers";
-import { Routes, Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const Home = ({ state, account }) => {
@@ -30,11 +28,20 @@ const Home = ({ state, account }) => {
 
     async function getVoters() {
       const voters = await contract.getAllVoterInfo();
+      console.log("Inside function 'getVoters()'(before) " + voters + "\n");
       setVoters(voters);
+      console.log("Inside function 'getVoters()'(after) " + voters + "\n");
     }
+
     async function getCandidates() {
       const candidates = await contract.getAllCandidateInfo();
+      console.log(
+        "Inside function 'getCandidates()'(before) " + candidates + "\n"
+      );
       setCandidates(candidates);
+      console.log(
+        "Inside function 'getCandidates()'(after) " + candidates + "\n"
+      );
     }
 
     if (contract) {
@@ -45,53 +52,33 @@ const Home = ({ state, account }) => {
         getVoters(),
         getCandidates(),
       ]);
-      ///Debugging
-      console.log(
-        // "In the promise\n",
-        // "Candidate validator" + canValidators + "\n",
-        // "Voter validator" + voterValidators.length + "\n",
-        // "Voter validator" + voterValidators + "\n",
-        account
-      );
     }
   }, [contract]);
+
+  console.log("candidates " + candidates + "\n");
+  console.log("voters " + voters + "\n");
 
   useEffect(() => {
     const allVoters = voters.flat();
     const allCandidates = candidates.flat();
 
-    ///Debugging
     console.log(
-      "Before navigation\n",
-      "Candidate validator" + canValidators + "\n",
-      "Voter validator" + voterValidators.length + "\n",
-      "Voter validator" + voterValidators + "\n",
-      "account" + account
+      "Outside function Candidate (inside useeffect) " + candidates + "\n"
     );
+    console.log("Outside function Voter(inside useeffect) " + voters + "\n");
 
     if (account) {
-      navigate(
-        account === owner
-          ? "/owner"
-          : account === voterValidators
-          ? "/VoterValidator"
-          : account === canValidators
-          ? "/CanValidator"
-          : allVoters.includes(account)
-          ? "/voter"
-          : allCandidates.includes(account)
-          ? "/candidate"
-          : "/",
-        { state: { isAccount: true } }
-      );
-      ///Debugging
-      console.log(
-        "After navigation" + "\n",
-        "Candidate validator" + canValidators + "\n",
-        "Voter validator" + voterValidators.length + "\n",
-        "Voter validator" + voterValidators + "\n",
-        "account" + account
-      );
+      if (account === owner) {
+        navigate("/owner");
+      } else if (account === voterValidators) {
+        navigate("/VoterValidator", { state: { voters: voters } });
+      } else if (account === canValidators) {
+        navigate("/CanValidator", { state: { candidates: candidates } });
+      } else if (allVoters.includes(account)) {
+        navigate("/voter");
+      } else if (allCandidates.includes(account)) {
+        navigate("/candidate");
+      }
     }
   }, [
     account,
