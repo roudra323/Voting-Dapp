@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { ethers } from "ethers";
 import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Winner from "./winner";
 
 const Owner = ({ state }) => {
   const navigate = useNavigate();
@@ -40,6 +40,13 @@ const Owner = ({ state }) => {
     setVoterAddress("");
     setNid("");
     // add code to update voter list or show success message
+  };
+
+  const winner = async () => {
+    const [winner, votes] = await contract.winnerCandidate();
+    const [, name, ,] = await contract.candidateInfo(winner);
+    console.log("Winner is " + name + " with " + votes + " votes");
+    return winner, votes, name;
   };
 
   return (
@@ -141,6 +148,10 @@ const Owner = ({ state }) => {
           </tbody>
         </table>
       </form>
+
+      <button type="button" className="btn btn-primary" onClick={winner}>
+        Winner
+      </button>
     </div>
   );
 };

@@ -71,9 +71,9 @@ const Home = ({ state, account }) => {
       if (account === owner) {
         navigate("/owner");
       } else if (account === voterValidators) {
-        navigate("/VoterValidator", { state: { voters: voters } });
+        navigate("/VoterValidator");
       } else if (account === canValidators) {
-        navigate("/CanValidator", { state: { candidates: candidates } });
+        navigate("/CanValidator");
       } else if (allVoters.includes(account)) {
         navigate("/voter");
       } else if (allCandidates.includes(account)) {
