@@ -45,15 +45,9 @@ const Owner = ({ state }) => {
 
   const winner = async () => {
     const [winner, votes] = await contract.winnerCandidate();
+    const Votes = votes.toString();
     const [, name, ,] = await contract.candidateInfo(winner);
-    navigate("/owner/winner", { state: { winner, name, votes } });
-    console.log(
-      "(Inside the owner component)Winner is " +
-        name +
-        " with " +
-        votes +
-        " votes"
-    );
+    navigate("/owner/winner", { state: { winner, name, Votes } });
   };
 
   return (
