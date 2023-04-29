@@ -9,10 +9,10 @@ import ValidatorCan from "./components/canvalidator";
 import ValidatorVoter from "./components/votervalidator";
 import Voter from "./components/voter";
 import Candidate from "./components/candidate";
+import Winner from "./components/winner";
 import { useNavigate } from "react-router-dom";
 
 function App() {
-  const navigate = useNavigate();
   const [state, setState] = useState({
     provider: null,
     signer: null,
@@ -87,6 +87,10 @@ function App() {
           path: "/owner",
           element: <Owner state={state} />,
         });
+        allowedRoutes.push({
+          path: "/owner/winner",
+          element: <Winner state={state} />,
+        });
       } else if (canValidator === account) {
         allowedRoutes.push({
           path: "/CanValidator",
@@ -130,6 +134,9 @@ function App() {
         </button>
       )}
       <Routes>
+        {allowedRoutes.map((route) => {
+          console.log(route.path, route.element);
+        })}
         {allowedRoutes.map((route) => (
           <Route key={route.path} path={route.path} element={route.element} />
         ))}
