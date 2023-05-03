@@ -1,5 +1,3 @@
-Sure, here's a revised version:
-
 # Voting Application
 
 ## Overview
