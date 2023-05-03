@@ -37,7 +37,7 @@ npm install
 After setting everything up just give the command:
 
 ```bash
-npm run dev
+.voting-app/client=> npm run dev
 ```
 
 The app will run on `http://localhost:5173/` in your browser.
